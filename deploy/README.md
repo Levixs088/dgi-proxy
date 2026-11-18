@@ -74,3 +74,26 @@ tail -f /opt/dgiproxy/logs/hunt.log      # pool hunter
 sqlite3 /opt/dgiproxy/data/reseller.db \
   'select username, used_bytes/1e9, quota_bytes/1e9 from accounts;'
 ```
+
+## Mode tanpa VPS (tanpa VCC)
+
+`bash deploy/run-local.sh` — gateway + tunnel Pinggy TCP + panel, semua di box ini.
+
+```bash
+bash deploy/run-local.sh
+# endpoint publik tertulis di ~/.dgi/state/endpoint.txt
+```
+
+Terverifikasi jalan lewat internet publik:
+
+| tes | hasil |
+|---|---|
+| HTTP proxy | `98.170.57.241` · Atlanta · Cox Communications |
+| SOCKS5 (port sama) | `116.101.73.52` · Vietnam |
+| password salah | `407` |
+| sticky `-s<token>` | `198.8.94.174` Seattle, 3× konsisten |
+| filter `-cUS` | keluar US |
+| ledger | 21 KB tercatat |
+
+**Batas free tier:** endpoint ganti tiap 60 menit dan hostname-nya memuat IP egress box.
+Cocok untuk demo/uji, belum untuk jualan produksi. Untuk endpoint permanen: VPS + `provision.sh`.
