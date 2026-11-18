@@ -4,27 +4,43 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Masuk — DGI Proxy</title>
+<meta name="robots" content="noindex">
 <link rel="icon" type="image/png" href="/static/favicon.png">
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 <nav class="nav wrap">
   <a class="brand" href="/">
-    <img src="/static/logo-64.png" alt="DGI Proxy logo">
+    <img src="/static/logo-64.png" alt="DGI Proxy logo" width="26" height="26">
     <span>dgi proxy</span>
   </a>
-  <div class="links"><a href="/">beranda</a></div>
-</nav>
-<main class="wrap">
-  <div class="authbox">
-    <h2>Masuk</h2>
-    <p class="dim" style="margin-bottom:16px">Panel buyer berjalan di server gateway, bukan di domain ini. Buka panel lewat alamat gateway atau minta akses ke admin.</p>
-    <div class="statcol">
-      <div class="row"><span class="k">status panel</span><span class="v warn">belum tersambung</span></div>
-      <div class="row"><span class="k">kontak admin</span><span class="v">Telegram</span></div>
-    </div>
-    <p style="margin-top:16px"><a class="linklike" href="/">kembali ke beranda</a></p>
+  <div class="links">
+    <a href="/#cara">cara pakai</a>
+    <a href="/#harga">harga</a>
+    <a href="/#faq">faq</a>
+    <a href="/login">masuk</a>
   </div>
+</nav>
+
+<main class="wrap">
+<div class="authbox">
+  <h2>Masuk ke panel</h2>
+  <p class="dim" style="margin-bottom:16px;font-size:13px">Panel buyer berjalan di server gateway, bukan di domain statis ini. Kredensial dikirim admin saat akun dibuat.</p>
+  <form method="post" action="/login">
+    <label>username
+      <input type="text" name="username" required autocomplete="username" maxlength="64" autofocus>
+    </label>
+    <label>password
+      <input type="password" name="password" required autocomplete="current-password">
+    </label>
+    <button class="btn full" type="submit">Masuk</button>
+  </form>
+  <p class="dim" style="margin-top:16px;font-size:12.5px">Belum punya akun? Minta trial 100 MB lewat admin.</p>
+</div>
 </main>
+
+<footer class="wrap foot">
+  <p class="meta">© 2026 DGI Proxy — gateway proxy per gigabyte. Kuota dihitung dua arah, habis berhenti sendiri.</p>
+</footer>
 </body>
 </html>
