@@ -5,24 +5,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DGI Proxy — gateway proxy per gigabyte</title>
 <meta name="description" content="Proxy gateway per-GB: rotating, sticky, filter negara. HTTP + SOCKS5 satu port. Kuota dua arah, habis berhenti sendiri.">
-<link rel="icon" type="image/png" href="/static/favicon.png">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#0061f0">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
+<link rel="preload" href="/static/fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/static/fonts/geist-mono.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 <nav class="nav wrap">
   <a class="brand" href="/">
-    <img src="/static/logo-64.png" alt="DGI Proxy logo" width="26" height="26">
+    <img src="/static/logo-64.png"
+         srcset="/static/logo-64.png 1x, /static/logo-256.png 2x, /static/logo-256.png 3x"
+         alt="DGI Proxy logo" width="26" height="26" decoding="async">
     <span>dgi proxy</span>
   </a>
   <div class="links">
     <a href="#cara">cara pakai</a>
     <a href="#harga">harga</a>
     <a href="#faq">faq</a>
+    
       <a href="/login">masuk</a>
+    
   </div>
 </nav>
 
+
+  
+
+
 <main class="wrap">
+
 
 <div class="announce">
   <span class="dot" aria-hidden="true"></span>
@@ -232,6 +246,7 @@
   <p class="lede center">Tanpa kartu, tanpa commit. Cukup satu akun untuk mengukur latency dan cakupan negara.</p>
   <div class="cta center"><a class="btn" href="/login">Masuk ke panel</a></div>
 </section>
+
 
 </main>
 
