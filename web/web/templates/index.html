@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+{% block body %}
+
+<div class="announce">
+  <span class="dot" aria-hidden="true"></span>
+  <span><b>Pool live:</b> {{ stats.upstreams }} upstream · {{ stats.socks5 }} SOCKS5 · p50 {{ stats.p50 }} ms</span>
+  <a href="/login">masuk panel</a>
+</div>
+
+<header class="hero">
+  <p class="eyebrow">proxy gateway · bayar per gigabyte</p>
+  <h1>Bandwidth proxy<br><span class="u">tanpa langganan slot.</span></h1>
+  <p class="lede">Rotating, sticky, dan filter negara lewat satu endpoint. Kuota dihitung dua arah, habis berhenti sendiri — tidak ada tagihan kejutan di akhir bulan.</p>
+  <div class="cta">
+    <a class="btn" href="/login">Mulai dari trial 100 MB</a>
+    <a class="btn btn-ghost" href="#cara">Lihat cara pakai</a>
+  </div>
+
+  <div class="specs">
+    <div class="spec">
+      <span class="k">protokol</span>
+      <span class="v">HTTP + SOCKS5</span>
+      <p>satu port, dideteksi otomatis dari byte pertama</p>
+    </div>
+    <div class="spec">
+      <span class="k">billing</span>
+      <span class="v">per GB · dua arah</span>
+      <p>upload dan unduh dihitung, transparan di ledger</p>
+    </div>
+  </div>
+</header>
+
+<section id="cara" class="band">
+  <div class="sechead">
+    <h2>Satu endpoint, empat <span class="u">cara keluar</span></h2>
+    <p class="sub">Semua dikendalikan dari username. Tidak ada dashboard setting yang perlu diklik, tidak ada restart.</p>
+  </div>
+
+  <div class="cards">
+    <article class="card">
+      <div class="chips"><span class="chip">rotating</span><span class="chip chip-dim">default</span></div>
+      <h3>IP baru tiap koneksi</h3>
+      <p>Tanpa direktif, setiap request keluar dari exit berbeda. Cocok untuk scraping volume tinggi.</p>
+      <code class="mono">http://user:pass@gw:8899</code>
+    </article>
+    <article class="card">
+      <div class="chips"><span class="chip">sticky</span><span class="chip chip-dim">-s&lt;token&gt;</span></div>
+      <h3>Satu IP dikunci per sesi</h3>
+      <p>Token sama menghasilkan exit sama. Ganti token untuk pindah IP, tanpa memutus sesi lain.</p>
+      <code class="mono">http://user-sabc123:pass@gw:8899</code>
+    </article>
+    <article class="card">
+      <div class="chips"><span class="chip">geo</span><span class="chip chip-dim">-c&lt;CC&gt;</span></div>
+      <h3>Filter negara keluar</h3>
+      <p>Batasi exit ke negara tertentu. Kalau negara itu kosong, request gagal cepat — bukan diam-diam keluar dari negara lain.</p>
+      <code class="mono">http://user-cUS:pass@gw:8899</code>
+    </article>
+    <article class="card">
+      <div class="chips"><span class="chip">socks5</span><span class="chip chip-dim">port sama</span></div>
+      <h3>SOCKS5 di port yang sama</h3>
+      <p>Kredensial identik untuk HTTP dan SOCKS5. Autodetect dari handshake, bukan port terpisah.</p>
+      <code class="mono">socks5h://user:pass@gw:8899</code>
+    </article>
+  </div>
+</section>
+
+<section class="band band-alt">
+  <div class="split">
+    <div>
+      <h2>Sebagian besar biaya proxy habis di <span class="u">slot menganggur</span></h2>
+      <p class="lede">Model langganan bulanan menagih kapasitas yang tidak dipakai. Di sini yang dihitung hanya byte yang benar-benar lewat — dua arah, tercatat di ledger yang bisa lu baca sendiri.</p>
+      <ul class="checks">
+        <li>Kuota habis → <b>402</b>, akses berhenti. Bukan tagihan menyusul.</li>
+        <li>Setiap request tercatat: byte masuk, byte keluar, exit IP.</li>
+        <li>Tidak ada minimum commit, tidak ada biaya aktivasi.</li>
+      </ul>
+    </div>
+    <div class="terminal" role="img" aria-label="contoh sesi terminal">
+      <div class="bar"><span>bash</span><span class="live">● online</span></div>
+      <pre><span class="cmt"># cek exit IP lewat gateway</span>
+<span class="cmd">$ curl -x http://user:pass@gw:8899 \
+    https://ip-api.com/json</span>
+<span class="out">{"query":"98.191.0.47","country":"US",
+ "isp":"Cox Communications"}</span>
+
+<span class="cmt"># paksa keluar dari Jerman</span>
+<span class="cmd">$ curl -x http://user-cDE:pass@gw:8899 \
+    https://ip-api.com/json</span>
+<span class="out">{"query":"85.214.12.9","country":"DE"}</span>
+
+<span class="cmt"># sisa kuota</span>
+<span class="cmd">$ curl -x http://user:pass@gw:8899 \
+    http://gw:8899/__quota</span>
+<span class="out">{"used":4613734,"quota":52428800}</span></pre>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="sechead">
+    <h2>Untuk siapa <span class="u">gateway ini</span></h2>
+    <p class="sub">Satu akun, tiga pola pemakaian yang berbeda.</p>
+  </div>
+  <div class="cards cards-3">
+    <article class="card">
+      <h3>Scraper &amp; data engineer</h3>
+      <p>Rotating per request, kuota dua arah, ledger bisa direkonsiliasi dengan job log sendiri.</p>
+      <span class="tag">rotating · per-GB</span>
+    </article>
+    <article class="card">
+      <h3>Tim QA &amp; lokalisasi</h3>
+      <p>Uji tampilan per negara tanpa VPN per orang. Filter negara lewat direktif username.</p>
+      <span class="tag">geo · sticky</span>
+    </article>
+    <article class="card">
+      <h3>Otomasi akun &amp; sesi</h3>
+      <p>Sesi panjang dengan IP tetap, ganti IP tanpa memutus proses lain yang sedang jalan.</p>
+      <span class="tag">sticky · socks5</span>
+    </article>
+  </div>
+</section>
+
+<section class="band band-alt">
+  <div class="sechead">
+    <h2>Yang <span class="u">tidak</span> kami janjikan</h2>
+    <p class="sub">Pool diisi dari hasil hunt sendiri, bukan reseller berlapis. Kualitasnya nyata, termasuk batasnya.</p>
+  </div>
+  <div class="grid2">
+    <div class="feat"><h3>Bukan 100% uptime</h3><p>Exit bisa mati kapan saja. Gateway mencoba ulang ke exit lain, tapi tidak ada SLA palsu di halaman ini.</p></div>
+    <div class="feat"><h3>Bukan semua negara</h3><p>Yang tersedia adalah yang ada di pool saat itu. Angka di atas diambil live, bukan karangan marketing.</p></div>
+    <div class="feat"><h3>Tanpa log isi traffic</h3><p>Yang dicatat hanya metrik byte dan exit IP untuk billing. Isi request tidak disimpan.</p></div>
+    <div class="feat"><h3>Kuota berhenti sendiri</h3><p>Habis kuota = 402. Tidak ada mode "lanjut dulu, tagih belakangan".</p></div>
+  </div>
+</section>
+
+<section id="harga" class="band">
+  <div class="sechead">
+    <h2>Harga <span class="u">jujur</span></h2>
+    <p class="sub">Bayar per GB terpakai. Trial gratis untuk mengukur kualitas sebelum keluar uang.</p>
+  </div>
+  <div class="cards cards-3">
+    <article class="card price">
+      <span class="k">trial</span>
+      <p class="amt">100 MB</p>
+      <p class="note">gratis · sekali per akun</p>
+      <ul class="checks sm">
+        <li>semua fitur direktif</li>
+        <li>HTTP + SOCKS5</li>
+        <li>ledger pemakaian</li>
+      </ul>
+      <a class="btn btn-ghost full" href="/login">Ambil trial</a>
+    </article>
+    <article class="card price feat-hi">
+      <span class="k">reguler</span>
+      <p class="amt">per GB</p>
+      <p class="note">tanpa minimum · tanpa langganan</p>
+      <ul class="checks sm">
+        <li>rotating + sticky + geo</li>
+        <li>kuota dua arah transparan</li>
+        <li>berhenti otomatis di 402</li>
+      </ul>
+      <a class="btn full" href="/login">Masuk panel</a>
+    </article>
+    <article class="card price">
+      <span class="k">volume</span>
+      <p class="amt">hubungi</p>
+      <p class="note">untuk pemakaian rutin besar</p>
+      <ul class="checks sm">
+        <li>harga per GB turun</li>
+        <li>prioritas exit sticky</li>
+        <li>invoice bulanan</li>
+      </ul>
+      <a class="btn btn-ghost full" href="#faq">Lihat FAQ</a>
+    </article>
+  </div>
+</section>
+
+<section id="faq" class="band band-alt">
+  <div class="sechead">
+    <h2>Pertanyaan &amp; <span class="u">jawaban</span></h2>
+    <p class="sub">Detail teknis: protokol, billing, dan batas pool.</p>
+  </div>
+  <div class="faq">
+    <details>
+      <summary>Bagaimana kuota dihitung?</summary>
+      <p>Dua arah: byte yang dikirim ke target dan byte yang diterima dari target, masing-masing dihitung. Angka terlihat di panel dan di ledger SQLite gateway.</p>
+    </details>
+    <details>
+      <summary>Apakah satu port benar-benar melayani HTTP dan SOCKS5?</summary>
+      <p>Ya. Koneksi masuk diperiksa byte pertamanya: <code class="mono">0x05</code> diperlakukan sebagai SOCKS5, selain itu sebagai HTTP proxy. Kredensial sama untuk keduanya.</p>
+    </details>
+    <details>
+      <summary>Apa yang terjadi kalau exit mati di tengah request?</summary>
+      <p>Gateway mencoba exit lain dari pool. Kalau negara yang diminta kosong, request gagal cepat dengan error jelas — tidak diam-diam keluar dari negara lain.</p>
+    </details>
+    <details>
+      <summary>Apakah traffic saya disimpan?</summary>
+      <p>Tidak. Yang tersimpan hanya metrik byte, exit IP, dan timestamp untuk billing.</p>
+    </details>
+    <details>
+      <summary>Bisa dipakai dari mana saja?</summary>
+      <p>Selama klien mendukung HTTP proxy atau SOCKS5 dengan autentikasi username/password — curl, requests, Playwright, browser extension, semuanya jalan.</p>
+    </details>
+  </div>
+</section>
+
+<section class="band ctaband">
+  <h2>Siap coba <span class="u">100 MB gratis?</span></h2>
+  <p class="lede center">Tanpa kartu, tanpa commit. Cukup satu akun untuk mengukur latency dan cakupan negara.</p>
+  <div class="cta center"><a class="btn" href="/login">Masuk ke panel</a></div>
+</section>
+
+{% endblock %}

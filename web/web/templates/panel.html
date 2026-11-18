@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Panel — DGI Proxy{% endblock %}
+{% block body %}
+<h1 class="pagetitle">Panel buyer</h1>
+
+{% if acc %}
+<section class="statcol wide">
+  <div class="row"><span class="k">username proxy</span><span class="v">{{ acc.username }}</span></div>
+  <div class="row"><span class="k">status</span><span class="v {{ 'warn' if not acc.active }}">{{ 'aktif' if acc.active else 'dimatikan' }}</span></div>
+  <div class="row"><span class="k">terpakai</span><span class="v">{{ '%.3f'|format(acc.used / gb) }} GB</span></div>
+  <div class="row"><span class="k">kuota</span><span class="v">{{ '%.3f'|format(acc.quota / gb) }} GB</span></div>
+  <div class="row"><span class="k">pemakaian</span><span class="v">{{ '%.1f'|format((acc.used / acc.quota * 100) if acc.quota else 0) }}%</span></div>
+  <div class="cap">kredensial proxy diberikan admin sekali saat akun dibuat. lupa? minta reset via telegram.</div>
+</section>
+
+<section>
+  <h2>Endpoint <span class="u">proxy</span></h2>
+  <div class="demo">
+    <div class="bar"><span>contoh pemakaian</span><span>sh</span></div>
+    <pre><span class="cmt"># rotating</span>
+<span class="cmd">curl -x http://{{ acc.username }}:PASSWORD@GATEWAY:8899 https://api.ipify.org</span>
+
+<span class="cmt"># sticky</span>
+<span class="cmd">curl -x http://{{ acc.username }}-ssesi1:PASSWORD@GATEWAY:8899 https://api.ipify.org</span>
+
+<span class="cmt"># negara US</span>
+<span class="cmd">curl --proxy socks5h://{{ acc.username }}-cUS:PASSWORD@GATEWAY:8899 https://api.ipify.org</span></pre>
+  </div>
+</section>
+
+<section>
+  <h2>25 transaksi <span class="u">terakhir</span></h2>
+  {% if usage %}
+  <table class="table">
+    <thead><tr><th>waktu</th><th>host</th><th>bytes</th></tr></thead>
+    <tbody>
+    {% for ts, nbytes, host in usage %}
+      <tr>
+        <td>{{ ts | int }}</td>
+        <td class="mono">{{ host or '—' }}</td>
+        <td class="v">{{ nbytes | filesizeformat }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="dim">Belum ada traffic tercatat.</p>
+  {% endif %}
+</section>
+{% else %}
+<section class="cta-box">
+  <p>Belum punya akun proxy. Minta admin lewat Telegram.</p>
+</section>
+{% endif %}
+{% endblock %}
