@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}DGI Proxy{% endblock %}</title>
+<link rel="icon" type="image/png" href="/static/logo-64.png">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<nav class="nav wrap">
+  <a class="brand" href="/">
+    <img src="/static/logo-64.png" alt="DGI Proxy logo">
+    <span>dgi proxy</span>
+  </a>
+  <div class="links">
+    <a href="/">beranda</a>
+    {% if session.get('user') %}
+      <a href="/panel">panel</a>
+      {% if session.get('role') == 'admin' %}<a href="/admin">admin</a>{% endif %}
+      <form method="post" action="/logout" class="inline">
+        <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+        <button class="linklike" type="submit">logout ({{ session['user'] }})</button>
+      </form>
+    {% else %}
+      <a href="/login">masuk</a>
+    {% endif %}
+  </div>
+</nav>
+
+{% with msgs = get_flashed_messages(with_categories=true) %}
+  {% if msgs %}
+  <div class="wrap">
+    {% for cat, m in msgs %}
+      <div class="flash flash-{{ cat }}">{{ m }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}
+
+<main class="wrap">
+{% block body %}{% endblock %}
+</main>
+
+<footer class="wrap foot">
+  <p class="meta">© 2026 DGI Proxy — gateway per-GB. Kuota dihitung dua arah, habis berhenti sendiri.</p>
+</footer>
+</body>
+</html>

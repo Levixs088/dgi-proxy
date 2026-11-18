@@ -1,0 +1,6 @@
+*.db
+.venv/
+__pycache__/
+web/.secret_key
+.env
+.vercel

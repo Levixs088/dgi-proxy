@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="masthead">
+  <div>
+    <h1>Bayar <span class="u">pemakaian</span>,<br>bukan slot.</h1>
+    <p class="lede">Proxy gateway per-GB. Kuota dua arah — upload dan unduh dihitung, habis berhenti sendiri. Satu port untuk HTTP dan SOCKS5. Sticky session dan filter negara lewat direktif username.</p>
+    <a class="btn" href="/login">Masuk ke panel</a>
+    <a class="btn btn-ghost" href="#cara">Cara pakai</a>
+  </div>
+  <aside class="statcol" aria-label="status pool live">
+    <div class="row"><span class="k">upstream hidup</span><span class="v">{{ stats.upstreams }} IP</span></div>
+    <div class="row"><span class="k">socks5</span><span class="v">{{ stats.socks5 }}</span></div>
+    <div class="row"><span class="k">siap sticky</span><span class="v">{{ stats.sticky }}</span></div>
+    <div class="row"><span class="k">latency p50</span><span class="v">{{ stats.p50 }} ms</span></div>
+    <div class="cap">dari pool saat halaman dirender — bukan angka marketing</div>
+  </aside>
+</div>
+
+<section id="cara">
+  <h2>Cara <span class="u">pakai</span></h2>
+  <div class="demo">
+    <div class="bar"><span>terminal</span><span>sh</span></div>
+    <pre><span class="cmt"># rotating — tiap koneksi IP baru</span>
+<span class="cmd">curl -x http://budi:RAHASIA@gw.dgiproxy:8899 https://api.ipify.org</span>
+
+<span class="cmt"># sticky — satu IP dikunci selama kerja</span>
+<span class="cmd">curl -x http://budi-sabc123:RAHASIA@gw.dgiproxy:8899 https://api.ipify.org</span>
+
+<span class="cmt"># filter negara keluar</span>
+<span class="cmd">curl --proxy socks5h://budi-cUS:RAHASIA@gw.dgiproxy:8899 https://api.ipify.org</span></pre>
+  </div>
+
+  <div class="grid2">
+    <div class="feat"><h3>Sticky session</h3><p>Tambah <code>-s&lt;token&gt;</code> di username. IP sama selama sesi, ganti tinggal ganti token.</p></div>
+    <div class="feat"><h3>Filter negara</h3><p>Tambah <code>-c&lt;CC&gt;</code>. Keluar dari negara yang diminta langsung lewat direktif.</p></div>
+    <div class="feat"><h3>HTTP + SOCKS5</h3><p>Satu port dua protokol, dideteksi otomatis.</p></div>
+    <div class="feat"><h3>Kuota dua arah</h3><p>Habis kuota, akses berhenti sendiri — 402, bukan tagihan kejutan.</p></div>
+  </div>
+</section>
+{% endblock %}
